@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace TrainingBase
 {
-    public class SmsMessage : Message
+    public class UniversalPerson<T> : Person<T>
     {
-        public SmsMessage(string text) : base(text) { }
+        public UniversalPerson(T id) : base(id) { }
     }
 }

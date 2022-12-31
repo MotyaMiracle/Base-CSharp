@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace TrainingBase
 {
-    public class Message
+    public class IntPerson<T> : Person<int>
     {
-        public string Text { get; }
-        public Message(string text)
+        public T Code { get; set; }
+        public IntPerson(int id, T code) : base(id)
         {
-            Text = text;
+            Code = code;
         }
     }
 }

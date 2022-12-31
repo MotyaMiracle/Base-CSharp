@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace TrainingBase
 {
-    public class Person
+    public class Person<T>
     {
-        public string Name { get; set; }
-        public Person(string name) => Name = name;
+        public T Id { get; }
+        public Person(T id)
+        {
+            Id = id;
+        }
     }
 }

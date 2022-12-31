@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace TrainingBase
 {
-    public class EmailMessage : Message
+    public class StringPerson : Person<string>
     {
-        public EmailMessage(string text) : base(text)
-        {
-
-        }
+        public StringPerson(string id) : base(id) { }
     }
 }
