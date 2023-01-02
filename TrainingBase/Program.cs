@@ -6,36 +6,18 @@
         {
             try
             {
-                int x = 5;
-                int y = x / 0;
-                Console.WriteLine($"Результат: {y}");
-                
+                TestClass.Method1();
             }
-            catch
+            catch (DivideByZeroException ex)
             {
-                Console.WriteLine("Возникло исключение!");
+                Console.WriteLine($"Catch в Main : {ex.Message}");
             }
-            finally // Блок можно опустить
+            finally
             {
-                Console.WriteLine("Блок finally");
+                Console.WriteLine("Блок finally в Main");
             }
-            Console.WriteLine("Конец программы");
-
-            Square("12");
-            Square("ab");
+            Console.WriteLine("Конец метода Main");
         }
 
-        public static void Square(string data)
-        {
-            if(int.TryParse(data, out var x)) 
-            {
-                Console.WriteLine($"Квадрат числа {x}: {x * x}");
-            }
-            else
-            {
-                Console.WriteLine("Некорректный ввод");
-            }
-            
-        }
     }
 }
