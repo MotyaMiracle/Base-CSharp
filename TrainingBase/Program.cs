@@ -6,20 +6,22 @@
         {
             try
             {
-                int x = 5;
-                int y = x / 0;
-                Console.WriteLine($"Результат: {y}");
-                
+                object obj = "you";
+                int num = (int)obj;     // System.InvalidCastException
+                Console.WriteLine($"Результат: {num}");
             }
-            catch
+            catch (DivideByZeroException)
             {
-                Console.WriteLine("Возникло исключение!");
+                Console.WriteLine("Возникло исключение DivideByZeroException");
             }
-            finally // Блок можно опустить
+            catch (IndexOutOfRangeException)
             {
-                Console.WriteLine("Блок finally");
+                Console.WriteLine("Возникло исключение IndexOutOfRangeException");
             }
-            Console.WriteLine("Конец программы");
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Исключение: {ex.Message}");
+            }
 
             Square("12");
             Square("ab");
