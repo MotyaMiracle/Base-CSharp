@@ -6,18 +6,28 @@
         {
             try
             {
-                int x = 5;
-                int y = x / 0;
-                Console.WriteLine($"Результат: {y}");
-                
+                try
+                {
+                    Console.Write("Введите имя: ");
+                    string? name = Console.ReadLine();
+                    if (name == null || name.Length < 2)
+                    {
+                        throw new Exception("Длина имени меньше 2 символов");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Ваше имя: {name}");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Ошибка: {e.Message}");
+                    throw;
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                Console.WriteLine("Возникло исключение!");
-            }
-            finally // Блок можно опустить
-            {
-                Console.WriteLine("Блок finally");
+                Console.WriteLine(ex.Message);
             }
             Console.WriteLine("Конец программы");
 
