@@ -1,4 +1,6 @@
-﻿namespace TrainingBase
+﻿using System;
+
+namespace TrainingBase
 {
     internal class Program
     {
@@ -6,36 +8,13 @@
         {
             try
             {
-                int x = 5;
-                int y = x / 0;
-                Console.WriteLine($"Результат: {y}");
-                
+                Person person = new Person { Name = "Tom", Age = 17 };
             }
-            catch
+            catch (PersonException ex)
             {
-                Console.WriteLine("Возникло исключение!");
+                Console.WriteLine($"Ошибка: {ex.Message}");
+                Console.WriteLine($"Некорректное значение: {ex.Value}");
             }
-            finally // Блок можно опустить
-            {
-                Console.WriteLine("Блок finally");
-            }
-            Console.WriteLine("Конец программы");
-
-            Square("12");
-            Square("ab");
-        }
-
-        public static void Square(string data)
-        {
-            if(int.TryParse(data, out var x)) 
-            {
-                Console.WriteLine($"Квадрат числа {x}: {x * x}");
-            }
-            else
-            {
-                Console.WriteLine("Некорректный ввод");
-            }
-            
         }
     }
 }
