@@ -4,20 +4,22 @@
     {
         static void Main(string[] args)
         {
+            int x = 0;
+            int y = 1;
             try
             {
-                int x = 5;
-                int y = x / 0;
-                Console.WriteLine($"Результат: {y}");
+                int result1 = x / y;
+                int result2 = y / x;
+                
                 
             }
-            catch
+            catch(DivideByZeroException) when (y == 0)
             {
-                Console.WriteLine("Возникло исключение!");
+                Console.WriteLine("Y не должен быть равен 0");
             }
-            finally // Блок можно опустить
+            catch(DivideByZeroException ex)
             {
-                Console.WriteLine("Блок finally");
+                Console.WriteLine($"Возникло исключение {ex.Message}");
             }
             Console.WriteLine("Конец программы");
 
