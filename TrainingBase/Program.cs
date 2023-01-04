@@ -1,52 +1,40 @@
-﻿namespace TrainingBase
+﻿using System.Threading.Tasks;
+
+namespace TrainingBase
 {
     internal class Program
     {
         async static Task Main(string[] args)
         {
-            await PrintAsync();   // вызов асинхронного метода
-            Console.WriteLine("Некоторые действия в методе Main");
-
-            await PrintNameAsync("Tom");
-            await PrintNameAsync("Bob");
-            await PrintNameAsync("Sam");
-
-            
-
-
-
-
-            void Print()
+            // определяем и запускаем задачи
+            var task1 = PrintAsync("H");
+            var task2 = PrintAsync("Hi");
+            var allTasks = Task.WhenAll(task1, task2);
+            try
             {
-                Thread.Sleep(3000);     // имитация продолжительной работы
-                Console.WriteLine("Hello METANIT.COM");
+                await allTasks;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception: {ex.Message}");
+                Console.WriteLine($"IsFaulted: {allTasks.IsFaulted}");
+                if (allTasks.Exception is not null)
+                {
+                    foreach (var exception in allTasks.Exception.InnerExceptions)
+                    {
+                        Console.WriteLine($"InnerException: {exception.Message}");
+                    }
+                }
             }
 
-            // определение асинхронного метода
-            async Task PrintAsync()
+            async Task PrintAsync(string message)
             {
-                await Task.Delay(3000); // имитация продолжительной работы
-                // или так
-                //await Task.Delay(TimeSpan.FromMilliseconds(3000));
-                Console.WriteLine("Начало метода PrintAsync"); // выполняется синхронно
-                await Task.Run(() => Print());                // выполняется асинхронно
-                Console.WriteLine("Конец метода PrintAsync");
-            }
-            // определение асинхронного метода
-            async Task PrintNameAsync(string name)
-            {
-                await Task.Delay(3000);     // имитация продолжительной работы
-                Console.WriteLine(name);
-            }
-            // асинхронное лямбда-выражение
-            Func<string, Task> printer = async (message) =>
-            {
-                await Task.Delay(3000);
+                // если длина строки меньше 3 символов, генерируем исключение
+                if (message.Length < 3)
+                    throw new ArgumentException($"Invalid string: {message}");
+                await Task.Delay(1000);     // имитация продолжительной операции
                 Console.WriteLine(message);
-            };
-
-            await printer("Hello World");
-            await printer("Hello METANIT.COM");
+            }
         }
     }
 }
