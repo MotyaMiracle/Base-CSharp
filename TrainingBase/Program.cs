@@ -4,49 +4,40 @@
     {
         async static Task Main(string[] args)
         {
-            await PrintAsync();   // вызов асинхронного метода
-            Console.WriteLine("Некоторые действия в методе Main");
+            // определяем и запускаем задачи
+            var task1 = PrintAsync("Hello C#");
+            var task2 = PrintAsync("Hello World");
+            var task3 = PrintAsync("Hello METANIT.COM");
 
-            await PrintNameAsync("Tom");
-            await PrintNameAsync("Bob");
-            await PrintNameAsync("Sam");
+            // ожидаем завершения всех задач
+            //await Task.WhenAll(task1, task2, task3);
+            // ожидаем завершения хотя бы одной задачи
+            await Task.WhenAny(task1, task2, task3);
 
-            
-
-
-
-
-            void Print()
+            async Task PrintAsync(string message)
             {
-                Thread.Sleep(3000);     // имитация продолжительной работы
-                Console.WriteLine("Hello METANIT.COM");
-            }
-
-            // определение асинхронного метода
-            async Task PrintAsync()
-            {
-                await Task.Delay(3000); // имитация продолжительной работы
-                // или так
-                //await Task.Delay(TimeSpan.FromMilliseconds(3000));
-                Console.WriteLine("Начало метода PrintAsync"); // выполняется синхронно
-                await Task.Run(() => Print());                // выполняется асинхронно
-                Console.WriteLine("Конец метода PrintAsync");
-            }
-            // определение асинхронного метода
-            async Task PrintNameAsync(string name)
-            {
-                await Task.Delay(3000);     // имитация продолжительной работы
-                Console.WriteLine(name);
-            }
-            // асинхронное лямбда-выражение
-            Func<string, Task> printer = async (message) =>
-            {
-                await Task.Delay(3000);
+                await Task.Delay(new Random().Next(1000, 2000));    // имитация продолжительной операции
                 Console.WriteLine(message);
-            };
+            }
 
-            await printer("Hello World");
-            await printer("Hello METANIT.COM");
+            // определяем и запускаем задачи
+            var task4 = SquareAsync(4);
+            var task5 = SquareAsync(5);
+            var task6 = SquareAsync(6);
+
+            // ожидаем завершения всех задач
+            int[] results = await Task.WhenAll(task4, task5, task6);
+            // получаем результаты:
+            foreach (int result in results)
+                Console.WriteLine(result);
+            // получаем результат задачи task2
+            Console.WriteLine($"task2 result: {task5.Result}"); // task2 result: 25
+
+            async Task<int> SquareAsync(int n)
+            {
+                await Task.Delay(1000);
+                return n * n;
+            }
         }
     }
 }
