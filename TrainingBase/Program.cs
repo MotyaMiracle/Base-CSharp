@@ -4,49 +4,76 @@
     {
         async static Task Main(string[] args)
         {
-            await PrintAsync();   // вызов асинхронного метода
-            Console.WriteLine("Некоторые действия в методе Main");
 
-            await PrintNameAsync("Tom");
-            await PrintNameAsync("Bob");
-            await PrintNameAsync("Sam");
+            Account account = new Account();
+            account.Added += PrintVoidAsync;
 
+            account.Put(500);
+
+            await Task.Delay(2000);
+
+            async void PrintVoidAsync(object? obj, string message)
+            {
+                await Task.Delay(1000);
+                Console.WriteLine(message);
+            }
+
+            var task =  PrintTaskAsync("Hello Metanit.com");
+            Console.WriteLine("Main Works");
+            await task;
+
+            async Task PrintTaskAsync(string message)
+            {
+                await Task.Delay(1000);
+                Console.WriteLine(message);
+            }
+
+            var square5 = SquareAsync(5);
+            var square6 = SquareAsync(6);
+            Console.WriteLine("Остальные действия в методе Main");
+
+            int n1 = await square5;
+            int n2 = await square6;
+            Console.WriteLine($"n1={n1}  n2={n2}"); // n1=25  n2=36
+
+
+            async Task<int> SquareAsync(int n)
+            {
+                await Task.Delay(0);
+                var result = n * n;
+                Console.WriteLine($"Квадрат числа {n} равен {result}");
+                return result;
+            }
             
 
+            // Task<T>
+            var result1 = await AddTaskAsync(4, 5);
+            Console.WriteLine(result1);
 
-
-
-            void Print()
+            Task<int> AddTaskAsync(int a, int b)
             {
-                Thread.Sleep(3000);     // имитация продолжительной работы
-                Console.WriteLine("Hello METANIT.COM");
+                return Task.FromResult(a + b); // синхронно возвратить некоторое значение
+            }
+            var result2 = await AddVTaskAsync(4, 5);
+            Console.WriteLine(result2);
+            // ValueTask<T>
+            ValueTask<int> AddVTaskAsync(int a, int b)
+            {
+                return new ValueTask<int>(a + b);
             }
 
-            // определение асинхронного метода
-            async Task PrintAsync()
-            {
-                await Task.Delay(3000); // имитация продолжительной работы
-                // или так
-                //await Task.Delay(TimeSpan.FromMilliseconds(3000));
-                Console.WriteLine("Начало метода PrintAsync"); // выполняется синхронно
-                await Task.Run(() => Print());                // выполняется асинхронно
-                Console.WriteLine("Конец метода PrintAsync");
-            }
-            // определение асинхронного метода
-            async Task PrintNameAsync(string name)
-            {
-                await Task.Delay(3000);     // имитация продолжительной работы
-                Console.WriteLine(name);
-            }
-            // асинхронное лямбда-выражение
-            Func<string, Task> printer = async (message) =>
-            {
-                await Task.Delay(3000);
-                Console.WriteLine(message);
-            };
+            //Преобразование ValueTask в Task
+            var getMessage = GetMessageAsync();
+            string message = await getMessage.AsTask();
+            Console.WriteLine(message); // Hello
 
-            await printer("Hello World");
-            await printer("Hello METANIT.COM");
+            async ValueTask<string> GetMessageAsync()
+            {
+                await Task.Delay(0);
+                return "Hello";
+            }
+
+
         }
     }
 }
